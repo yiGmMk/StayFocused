@@ -145,7 +145,7 @@ export const useStore = create<State>()(
       },
     }),
     {
-      name: 'freemind-storage',
+      name: 'stayfocused-storage',
       partialize: (state) => ({
         savedMixes: state.savedMixes,
         timerMinutes: state.timerMinutes,
