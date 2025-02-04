@@ -1,17 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Layout } from './components/Layout';
 import { Timer } from './components/Timer';
 import { SoundButton } from './components/SoundButton';
 import { SavedMixes } from './components/SavedMixes';
 import { useThemeStore } from './store/useThemeStore';
 import { sounds } from './data/sounds';
+import { categoryToKey } from './data/categoryMap';
 import './styles/fonts.css';
 import { useTranslation } from 'react-i18next';
 
 function App() {
   const { getTheme } = useThemeStore();
   const theme = getTheme();
-  const { t } = useTranslation();
+  const { t, ready } = useTranslation();
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    if (ready) {
+      setIsLoading(false);
+    }
+  }, [ready]);
+
+  if (isLoading) {
+    return (
+      <div className={`min-h-screen ${theme.colors.background} flex items-center justify-center`}>
+        <div className={`${theme.colors.textPrimary}`}>Loading...</div>
+      </div>
+    );
+  }
 
   return (
     <Layout>
@@ -25,7 +41,7 @@ function App() {
                 className={`${theme.colors.foreground} rounded-xl p-6 shadow-lg`}
               >
                 <h2 className={`text-xl font-semibold mb-4 ${theme.colors.text}`}>
-                  {t(`categories.${category}`)}
+                  {t(`categories.${categoryToKey[category]}`)}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {sounds

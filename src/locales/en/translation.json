@@ -6,7 +6,8 @@
   "categories": {
     "nature": "Nature",
     "rain": "Rain",
-    "city": "City"
+    "city": "City",
+    "animals": "Animals"
   },
   "sounds": {
     "forest-birds": "Forest Birds",

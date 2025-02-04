@@ -4,7 +4,14 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stay Focused - 专注时钟 & 白噪音</title>
+    <title>Stay Focused</title>
+    <script>
+      // 根据用户语言设置标题
+      const userLang = localStorage.getItem('preferred-language') || 'zh';
+      document.title = userLang === 'zh' ? 
+        'Stay Focused - 专注时钟 & 白噪音' : 
+        'Stay Focused - Focus Timer & White Noise';
+    </script>
   </head>
   <body>
     <div id="root"></div>
