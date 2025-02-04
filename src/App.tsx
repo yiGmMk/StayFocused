@@ -6,7 +6,6 @@ import { SavedMixes } from './components/SavedMixes';
 import { useThemeStore } from './store/useThemeStore';
 import { sounds } from './data/sounds';
 import { categoryToKey } from './data/categoryMap';
-import './styles/fonts.css';
 import { useTranslation } from 'react-i18next';
 
 function App() {

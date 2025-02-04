@@ -168,7 +168,7 @@ export const Timer: React.FC = () => {
             ) : (
               <div 
                 onClick={() => !isRunning && setIsEditing(true)}
-                className={`font-digital text-4xl tracking-wider cursor-pointer
+                className={`text-4xl tracking-wider cursor-pointer
                   ${timeLeft === 0 
                     ? 'text-red-500' 
                     : isRunning 
