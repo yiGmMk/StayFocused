@@ -1,0 +1,12 @@
+{
+  "app": {
+    "title": "FreeMind 白噪音",
+    "description": "专注和放松的环境音效"
+  },
+  "controls": {
+    "play": "播放",
+    "pause": "暂停",
+    "stop": "停止",
+    "volume": "音量"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "app": {
+    "title": "FreeMind White Noise",
+    "description": "Focus and relax with ambient sounds"
+  },
+  "controls": {
+    "play": "Play",
+    "pause": "Pause",
+    "stop": "Stop",
+    "volume": "Volume"
+  }
+}
