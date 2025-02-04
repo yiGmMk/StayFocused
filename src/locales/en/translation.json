@@ -1,0 +1,63 @@
+{
+  "app": {
+    "title": "Stay Focused",
+    "description": "Focus Timer & White Noise"
+  },
+  "categories": {
+    "nature": "Nature",
+    "rain": "Rain",
+    "city": "City"
+  },
+  "sounds": {
+    "forest-birds": "Forest Birds",
+    "waves": "Ocean Waves",
+    "creek": "Creek",
+    "wind": "Gentle Wind",
+    "leaves-rustling": "Rustling Leaves",
+    "waterfall": "Waterfall",
+    "bonfire": "Bonfire",
+    "beach": "Beach",
+    "forest-night": "Night Forest",
+    "rain-light": "Light Rain",
+    "rain-heavy": "Heavy Rain",
+    "rain-roof": "Rain on Roof",
+    "rain-window": "Rain on Window",
+    "rain-thunder": "Thunderstorm",
+    "rain-leaves": "Rain on Leaves",
+    "rain-puddle": "Rain Puddle",
+    "city-traffic": "City Traffic",
+    "cafe": "Coffee Shop",
+    "keyboard": "Keyboard",
+    "subway": "Subway",
+    "park": "City Park",
+    "train": "Train"
+  },
+  "timer": {
+    "title": "Focus Time",
+    "start": "Start",
+    "pause": "Pause",
+    "reset": "Reset",
+    "minutes": "min",
+    "completeTitle": "Focus Time Complete",
+    "completeMessage": "Great job! You've completed your focus session. Take a break and get ready for the next one!",
+    "customMinutes": "Custom Time"
+  },
+  "mixes": {
+    "title": "My Mixes",
+    "save": "Save Current Mix",
+    "saved": "Saved Mixes",
+    "namePlaceholder": "Name your mix",
+    "noSounds": "No sounds",
+    "mix": "Mix"
+  },
+  "themes": {
+    "title": "Theme Settings",
+    "minimal-light": "Minimal Light",
+    "nature": "Nature Green",
+    "ocean": "Ocean Blue",
+    "warm": "Warm Orange",
+    "sunset": "Sunset",
+    "mint": "Mint",
+    "toggle": "Toggle Theme"
+  }
+} 

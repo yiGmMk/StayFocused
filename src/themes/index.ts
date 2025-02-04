@@ -1,5 +1,4 @@
 export interface Theme {
-  name: string;
   id: string;
   colors: {
     background: string;
@@ -30,7 +29,6 @@ export interface Theme {
 export const themes: Theme[] = [
   {
     id: 'minimal-light',
-    name: '极简白',
     colors: {
       background: 'bg-gray-50',
       foreground: 'bg-white',
@@ -58,7 +56,6 @@ export const themes: Theme[] = [
   },
   {
     id: 'nature',
-    name: '自然绿',
     colors: {
       background: 'bg-green-50',
       foreground: 'bg-white',
@@ -86,7 +83,6 @@ export const themes: Theme[] = [
   },
   {
     id: 'ocean',
-    name: '海洋蓝',
     colors: {
       background: 'bg-blue-50',
       foreground: 'bg-white',
@@ -114,7 +110,6 @@ export const themes: Theme[] = [
   },
   {
     id: 'warm',
-    name: '温暖橙',
     colors: {
       background: 'bg-orange-50',
       foreground: 'bg-white',
@@ -142,7 +137,6 @@ export const themes: Theme[] = [
   },
   {
     id: 'sunset',
-    name: '日落',
     colors: {
       background: 'bg-orange-50',
       foreground: 'bg-white',
@@ -170,7 +164,6 @@ export const themes: Theme[] = [
   },
   {
     id: 'mint',
-    name: '薄荷',
     colors: {
       background: 'bg-emerald-50',
       foreground: 'bg-white',

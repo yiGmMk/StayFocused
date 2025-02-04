@@ -3,6 +3,7 @@ import { Sound } from '../types';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
 import { SoundIcon } from './SoundIcon';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
   sound: Sound;
@@ -12,6 +13,7 @@ export const SoundButton: React.FC<Props> = ({ sound }) => {
   const { activeSounds, addSound, removeSound, setVolume } = useStore();
   const { getTheme } = useThemeStore();
   const theme = getTheme();
+  const { t } = useTranslation();
   
   const isPlaying = activeSounds.has(sound.id);
   const volume = activeSounds.get(sound.id)?.volume || 0.5;
@@ -34,7 +36,9 @@ export const SoundButton: React.FC<Props> = ({ sound }) => {
       >
         <SoundIcon type={sound.iconType} />
       </button>
-      <p className={`text-sm ${theme.colors.textSecondary}`}>{sound.name}</p>
+      <p className={`text-sm ${theme.colors.textSecondary}`}>
+        {t(`sounds.${sound.id}`)}
+      </p>
       {isPlaying && (
         <input
           type="range"

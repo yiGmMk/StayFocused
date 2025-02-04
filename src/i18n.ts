@@ -1,36 +1,27 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
-import enTranslation from './locales/en.json';
-import zhTranslation from './locales/zh.json';
-
-const resources = {
-  en: {
-    translation: enTranslation,
-  },
-  zh: {
-    translation: zhTranslation,
-  },
-};
-
-// 获取用户的语言偏好
-const getInitialLanguage = () => {
-  const savedLanguage = localStorage.getItem('preferred-language');
-  if (savedLanguage) {
-    return savedLanguage;
-  }
-  return navigator.language.startsWith('zh') ? 'zh' : 'en';
-};
+import enTranslation from './locales/en/translation.json';
+import zhTranslation from './locales/zh/translation.json';
 
 i18n
   .use(initReactI18next)
   .init({
-    resources,
-    lng: getInitialLanguage(),
-    fallbackLng: 'en',
-    interpolation: {
-      escapeValue: false,
+    resources: {
+      en: {
+        translation: enTranslation
+      },
+      zh: {
+        translation: zhTranslation
+      }
     },
+    lng: localStorage.getItem('preferred-language') || 'zh', // 默认语言
+    fallbackLng: 'zh',
+    interpolation: {
+      escapeValue: false
+    },
+    react: {
+      useSuspense: false
+    }
   });
 
 export default i18n;

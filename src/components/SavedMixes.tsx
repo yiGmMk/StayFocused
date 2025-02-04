@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { Save, List, Music, Trash2 } from 'lucide-react';
 import { useStore } from '../store/useStore';
 import { useThemeStore } from '../store/useThemeStore';
+import { useTranslation } from 'react-i18next';
 
 export const SavedMixes: React.FC = () => {
   const { savedMixes, saveMix, loadMix, deleteMix } = useStore();
   const { getTheme } = useThemeStore();
   const theme = getTheme();
+  const { t } = useTranslation();
   const [newMixName, setNewMixName] = useState('');
   const [isNaming, setIsNaming] = useState(false);
   const [selectedMixIndex, setSelectedMixIndex] = useState(null);
@@ -36,7 +38,7 @@ export const SavedMixes: React.FC = () => {
           type="text"
           value={newMixName}
           onChange={(e) => setNewMixName(e.target.value)}
-          placeholder="为你的混音命名"
+          placeholder={t('mixes.namePlaceholder')}
           className={`w-full px-3 py-2 rounded-lg 
             ${theme.colors.secondary} 
             placeholder:${theme.colors.textSecondary}
@@ -53,7 +55,7 @@ export const SavedMixes: React.FC = () => {
             hover:opacity-90 transition-opacity duration-200`}
         >
           <Save size={16} />
-          <span>保存当前混音</span>
+          <span>{t('mixes.save')}</span>
         </button>
       </div>
 
@@ -62,7 +64,7 @@ export const SavedMixes: React.FC = () => {
           <div className="space-y-2">
             <h3 className={`flex items-center space-x-2 text-lg font-semibold ${theme.colors.text}`}>
               <List size={20} />
-              <span>已保存的混音</span>
+              <span>{t('mixes.saved')}</span>
             </h3>
             <div className="flex flex-col space-y-2">
               {savedMixes.map((mix, index) => (
@@ -94,13 +96,13 @@ export const SavedMixes: React.FC = () => {
                       </div>
                       <div>
                         <h3 className={`text-sm font-medium ${theme.colors.textPrimary}`}>
-                          {mix.name || `混音 ${index + 1}`}
+                          {mix.name || t('mixes.mix') + ` ${index + 1}`}
                         </h3>
                         <p className={`text-xs ${theme.colors.textSecondary} mt-0.5`}>
                           {mix.volumes && Object.entries(mix.volumes)
                             .filter(([_, volume]) => volume > 0)
-                            .map(([sound]) => sound)
-                            .join(' · ') || '无声音'}
+                            .map(([soundId]) => t(`sounds.${soundId}`))
+                            .join(' · ') || t('mixes.noSounds')}
                         </p>
                       </div>
                     </div>

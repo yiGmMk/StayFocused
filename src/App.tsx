@@ -6,10 +6,12 @@ import { SavedMixes } from './components/SavedMixes';
 import { useThemeStore } from './store/useThemeStore';
 import { sounds } from './data/sounds';
 import './styles/fonts.css';
+import { useTranslation } from 'react-i18next';
 
 function App() {
   const { getTheme } = useThemeStore();
   const theme = getTheme();
+  const { t } = useTranslation();
 
   return (
     <Layout>
@@ -23,7 +25,7 @@ function App() {
                 className={`${theme.colors.foreground} rounded-xl p-6 shadow-lg`}
               >
                 <h2 className={`text-xl font-semibold mb-4 ${theme.colors.text}`}>
-                  {category}
+                  {t(`categories.${category}`)}
                 </h2>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                   {sounds
@@ -44,7 +46,7 @@ function App() {
             {/* 我的混音 */}
             <div className={`${theme.colors.foreground} rounded-xl p-6 shadow-lg`}>
               <h2 className={`text-xl font-semibold mb-4 ${theme.colors.text}`}>
-                我的混音
+                {t('mixes.title')}
               </h2>
               <SavedMixes />
             </div>

@@ -11,15 +11,17 @@ export const LanguageSwitcher: React.FC = () => {
 
   const toggleLanguage = () => {
     const newLanguage = currentLanguage.startsWith('zh') ? 'en' : 'zh';
-    i18n.changeLanguage(newLanguage);
-    // 保存语言偏好到 localStorage
-    localStorage.setItem('preferred-language', newLanguage);
+    i18n.changeLanguage(newLanguage).then(() => {
+      localStorage.setItem('preferred-language', newLanguage);
+      // 强制所有组件重新渲染
+      window.dispatchEvent(new Event('languageChanged'));
+    });
   };
 
   return (
     <button
       onClick={toggleLanguage}
-      className={`p-2 rounded-md hover:${theme.colors.hover} transition-colors duration-200 flex items-center gap-1`}
+      className={`p-2 rounded-md hover:bg-opacity-80 transition-colors duration-200 flex items-center gap-1`}
       aria-label="Switch Language"
     >
       <Languages className={`w-4 h-4 ${theme.colors.textPrimary}`} />

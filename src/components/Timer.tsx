@@ -3,14 +3,16 @@ import { Play, Square, RotateCcw, Bell, BellOff } from 'lucide-react';
 import { useThemeStore } from '../store/useThemeStore';
 import { useTimerStore } from '../store/timerStore';
 import { AlertDialog } from './AlertDialog';
+import { useTranslation } from 'react-i18next';
 
 const TIME_PRESETS = [
-  { minutes: 25, label: '25 分钟' },
-  { minutes: 45, label: '45 分钟' },
-  { minutes: 60, label: '60 分钟' }
+  { minutes: 25, label: '25' },
+  { minutes: 45, label: '45' },
+  { minutes: 60, label: '60' }
 ];
 
 export const Timer: React.FC = () => {
+  const { t } = useTranslation();
   // 从 store 获取状态和动作
   const { minutes, isRunning, soundEnabled, actions } = useTimerStore();
   const { getTheme } = useThemeStore();
@@ -113,7 +115,7 @@ export const Timer: React.FC = () => {
     <div className={`${theme.colors.foreground} p-6 rounded-xl relative overflow-hidden ${theme.shadows.lg}`}>
       {/* 标题 */}
       <h2 className={`text-xl font-semibold mb-4 ${theme.colors.text}`}>
-        专注时间
+        {t('timer.title')}
       </h2>
 
       {/* 声音开关 */}
@@ -267,7 +269,7 @@ export const Timer: React.FC = () => {
                   : theme.colors.secondary + ' ' + theme.colors.text}
                 hover:opacity-90 disabled:opacity-50`}
             >
-              {label}
+              {`${label} ${t('timer.minutes')}`}
             </button>
           ))}
         </div>
@@ -315,8 +317,8 @@ export const Timer: React.FC = () => {
           setShowAlert(false);
           handleReset();
         }}
-        title="专注时间结束"
-        message="太棒了！你已经完成了这次专注。休息一下，准备开始新的专注吧！"
+        title={t('timer.completeTitle')}
+        message={t('timer.completeMessage')}
       />
     </div>
   );
