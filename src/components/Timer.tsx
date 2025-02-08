@@ -13,41 +13,54 @@ const TIME_PRESETS = [
 
 export const Timer: React.FC = () => {
   const { t } = useTranslation();
-  // 从 store 获取状态和动作
   const { minutes, isRunning, soundEnabled, actions } = useTimerStore();
   const { getTheme } = useThemeStore();
   const theme = getTheme();
 
-  // 本地状态
   const [timeLeft, setTimeLeft] = useState(minutes * 60);
   const [showAlert, setShowAlert] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingValue, setEditingValue] = useState(minutes.toString());
+
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // 初始化音频
   useEffect(() => {
-    audioRef.current = new Audio('/sounds/bell.mp3');
-    audioRef.current.preload = 'auto';
+    const audio = new Audio('/sounds/bell.mp3');
+    audio.preload = 'auto';
+    audio.volume = 0.7;
+
+    // 监听音频结束事件
+    audio.addEventListener('ended', () => {
+      // 重新开始播放
+      audio.currentTime = 0;
+      audio.play();
+    });
+
+    audioRef.current = audio;
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
   }, []);
 
-  // 播放声音
   const playSound = useCallback(() => {
-    if (soundEnabled && audioRef.current) {
-      audioRef.current.play().catch(error => {
-        console.error("Audio play failed:", error);
-      });
-    }
+    if (!soundEnabled || !audioRef.current) return;
+
+    audioRef.current.currentTime = 0;
+    audioRef.current.play().catch(error => {
+      console.error("Audio play failed:", error);
+    });
   }, [soundEnabled]);
 
-  // 计时器完成处理
   const handleTimerComplete = useCallback(() => {
     actions.stop();
     playSound();
     setShowAlert(true);
   }, [actions, playSound]);
 
-  // 计时器逻辑
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (isRunning && timeLeft > 0) {
@@ -98,7 +111,7 @@ export const Timer: React.FC = () => {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
@@ -107,9 +120,9 @@ export const Timer: React.FC = () => {
 
   // 计算进度
   const progress = ((minutes * 60 - timeLeft) / (minutes * 60)) * 100;
-  const progressColor = progress >= 75 ? 'text-red-500' : 
-                       progress >= 50 ? 'text-yellow-500' : 
-                       'text-green-500';
+  const progressColor = progress >= 75 ? 'text-red-500' :
+    progress >= 50 ? 'text-yellow-500' :
+      'text-green-500';
 
   return (
     <div className={`${theme.colors.foreground} p-6 rounded-xl relative overflow-hidden ${theme.shadows.lg}`}>
@@ -166,12 +179,12 @@ export const Timer: React.FC = () => {
                 <span className={`text-xl ${theme.colors.textSecondary}`}>分钟</span>
               </div>
             ) : (
-              <div 
+              <div
                 onClick={() => !isRunning && setIsEditing(true)}
                 className={`text-4xl tracking-wider cursor-pointer
-                  ${timeLeft === 0 
-                    ? 'text-red-500' 
-                    : isRunning 
+                  ${timeLeft === 0
+                    ? 'text-red-500'
+                    : isRunning
                       ? theme.colors.accent
                       : theme.colors.accent + ' opacity-80'}
                   transition-colors duration-300
@@ -199,7 +212,7 @@ export const Timer: React.FC = () => {
                 filter="url(#glow)"
               />
             )}
-            
+
             {/* 背景环 */}
             <circle
               cx="96"
@@ -211,7 +224,7 @@ export const Timer: React.FC = () => {
               strokeDasharray="565.2"
               strokeLinecap="round"
             />
-            
+
             {/* 进度环 */}
             <circle
               cx="96"
@@ -228,10 +241,10 @@ export const Timer: React.FC = () => {
             {/* 发光滤镜 */}
             <defs>
               <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
                 <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
             </defs>
@@ -284,7 +297,7 @@ export const Timer: React.FC = () => {
           >
             <RotateCcw size={20} />
           </button>
-          
+
           {!isRunning ? (
             <button
               onClick={() => {
