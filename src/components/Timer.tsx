@@ -4,6 +4,7 @@ import { useThemeStore } from '../store/useThemeStore';
 import { useTimerStore } from '../store/timerStore';
 import { AlertDialog } from './AlertDialog';
 import { useTranslation } from 'react-i18next';
+import { Howl } from 'howler';
 
 const TIME_PRESETS = [
   { minutes: 25, label: '25' },
@@ -13,30 +14,35 @@ const TIME_PRESETS = [
 
 export const Timer: React.FC = () => {
   const { t } = useTranslation();
-  // 从 store 获取状态和动作
   const { minutes, isRunning, soundEnabled, actions } = useTimerStore();
   const { getTheme } = useThemeStore();
   const theme = getTheme();
 
-  // 本地状态
   const [timeLeft, setTimeLeft] = useState(minutes * 60);
   const [showAlert, setShowAlert] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [editingValue, setEditingValue] = useState(minutes.toString());
-  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const soundRef = useRef<Howl | null>(null);
 
   // 初始化音频
   useEffect(() => {
-    audioRef.current = new Audio('/sounds/bell.mp3');
-    audioRef.current.preload = 'auto';
+    soundRef.current = new Howl({
+      src: ['/sounds/bell.mp3'],
+      preload: true,
+      loop: false,
+    });
+
+    return () => {
+      if (soundRef.current) {
+        soundRef.current.unload();
+      }
+    };
   }, []);
 
   // 播放声音
   const playSound = useCallback(() => {
-    if (soundEnabled && audioRef.current) {
-      audioRef.current.play().catch(error => {
-        console.error("Audio play failed:", error);
-      });
+    if (soundEnabled && soundRef.current) {
+      soundRef.current.play();
     }
   }, [soundEnabled]);
 
@@ -98,27 +104,24 @@ export const Timer: React.FC = () => {
     const hours = Math.floor(seconds / 3600);
     const mins = Math.floor((seconds % 3600) / 60);
     const secs = seconds % 60;
-    
+
     if (hours > 0) {
       return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
     }
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // 计算进度
   const progress = ((minutes * 60 - timeLeft) / (minutes * 60)) * 100;
-  const progressColor = progress >= 75 ? 'text-red-500' : 
-                       progress >= 50 ? 'text-yellow-500' : 
-                       'text-green-500';
+  const progressColor = progress >= 75 ? 'text-red-500' :
+    progress >= 50 ? 'text-yellow-500' :
+      'text-green-500';
 
   return (
     <div className={`${theme.colors.foreground} p-6 rounded-xl relative overflow-hidden ${theme.shadows.lg}`}>
-      {/* 标题 */}
       <h2 className={`text-xl font-semibold mb-4 ${theme.colors.text}`}>
         {t('timer.title')}
       </h2>
 
-      {/* 声音开关 */}
       <div className="absolute top-3 right-3 z-10">
         <button
           onClick={actions.toggleSound}
@@ -134,7 +137,6 @@ export const Timer: React.FC = () => {
       </div>
 
       <div className="flex flex-col items-center">
-        {/* 时间显示 */}
         <div className="relative w-48 h-48 mb-4">
           <div className="absolute inset-0 flex items-center justify-center z-10">
             {isEditing ? (
@@ -166,12 +168,12 @@ export const Timer: React.FC = () => {
                 <span className={`text-xl ${theme.colors.textSecondary}`}>分钟</span>
               </div>
             ) : (
-              <div 
+              <div
                 onClick={() => !isRunning && setIsEditing(true)}
                 className={`text-4xl tracking-wider cursor-pointer
-                  ${timeLeft === 0 
-                    ? 'text-red-500' 
-                    : isRunning 
+                  ${timeLeft === 0
+                    ? 'text-red-500'
+                    : isRunning
                       ? theme.colors.accent
                       : theme.colors.accent + ' opacity-80'}
                   transition-colors duration-300
@@ -185,9 +187,7 @@ export const Timer: React.FC = () => {
             )}
           </div>
 
-          {/* 进度环 */}
           <svg className="w-full h-full transform -rotate-90">
-            {/* 发光效果 */}
             {isRunning && (
               <circle
                 cx="96"
@@ -199,8 +199,7 @@ export const Timer: React.FC = () => {
                 filter="url(#glow)"
               />
             )}
-            
-            {/* 背景环 */}
+
             <circle
               cx="96"
               cy="96"
@@ -211,8 +210,7 @@ export const Timer: React.FC = () => {
               strokeDasharray="565.2"
               strokeLinecap="round"
             />
-            
-            {/* 进度环 */}
+
             <circle
               cx="96"
               cy="96"
@@ -225,18 +223,16 @@ export const Timer: React.FC = () => {
               strokeLinecap="round"
             />
 
-            {/* 发光滤镜 */}
             <defs>
               <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                <feGaussianBlur stdDeviation="4" result="coloredBlur" />
                 <feMerge>
-                  <feMergeNode in="coloredBlur"/>
-                  <feMergeNode in="SourceGraphic"/>
+                  <feMergeNode in="coloredBlur" />
+                  <feMergeNode in="SourceGraphic" />
                 </feMerge>
               </filter>
             </defs>
 
-            {/* 刻度 */}
             {Array.from({ length: 60 }).map((_, i) => {
               const rotation = i * 6;
               const isMajor = i % 5 === 0;
@@ -256,7 +252,6 @@ export const Timer: React.FC = () => {
           </svg>
         </div>
 
-        {/* 预设时间按钮 */}
         <div className="grid grid-cols-3 gap-2 w-full mb-4">
           {TIME_PRESETS.map(({ minutes: mins, label }) => (
             <button
@@ -274,7 +269,6 @@ export const Timer: React.FC = () => {
           ))}
         </div>
 
-        {/* 控制按钮 */}
         <div className="flex justify-center space-x-4">
           <button
             onClick={handleReset}
@@ -284,7 +278,7 @@ export const Timer: React.FC = () => {
           >
             <RotateCcw size={20} />
           </button>
-          
+
           {!isRunning ? (
             <button
               onClick={() => {
@@ -310,7 +304,6 @@ export const Timer: React.FC = () => {
         </div>
       </div>
 
-      {/* 完成提示 */}
       <AlertDialog
         isOpen={showAlert}
         onClose={() => {
