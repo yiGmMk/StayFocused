@@ -1,20 +1,32 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Stay Focused</title>
-    <script>
-      // 根据用户语言设置标题
-      const userLang = localStorage.getItem('preferred-language') || 'zh';
-      document.title = userLang === 'zh' ? 
-        'Stay Focused - 专注时钟 & 白噪音' : 
-        'Stay Focused - Focus Timer & White Noise';
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="msvalidate.01" content="B6FE76A783A1770409EC903DE2C7AC6A" />
+  <title>Stay Focused</title>
+  <script>
+    // 根据用户语言设置标题
+    const userLang = localStorage.getItem('preferred-language') || 'zh';
+    document.title = userLang === 'zh' ?
+      'Stay Focused - 专注时钟 & 白噪音' :
+      'Stay Focused - Focus Timer & White Noise';
+  </script>
+  <script type="text/javascript">
+    // 数据统计
+    (function (c, l, a, r, i, t, y) {
+      c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+      t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+      y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+    })(window, document, "clarity", "script", "q7fiyr4ex7");
+  </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>
